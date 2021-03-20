@@ -3,12 +3,12 @@ import { BadRequest } from '../utils/Errors'
 
 class BugService {
   async find(query = {}) {
-    const bug = await dbContext.Bug.find(query)
+    const bug = await dbContext.Bug.find(query).populate('creator')
     return bug
   }
 
   async findById(id) {
-    const bug = await dbContext.Bug.findById(id)
+    const bug = await dbContext.Bug.findById(id).populate('creator')
     if (!bug) {
       throw new BadRequest('Invalid Id')
     }
@@ -16,7 +16,7 @@ class BugService {
   }
 
   async create(body) {
-    return await dbContext.Bug.create(body)
+    return await (await dbContext.Bug.create(body)).populate('creator')
   }
 
   async delete(id) {
@@ -24,6 +24,10 @@ class BugService {
     if (!bug) {
       throw new BadRequest('No Bug exists with that ID')
     }
+  }
+
+  async edit(id, body) {
+    return await dbContext.Bug.findByIdAndUpdate(id, body)
   }
 }
 

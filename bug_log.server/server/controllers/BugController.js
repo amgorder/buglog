@@ -4,7 +4,7 @@ import { bugService } from '../services/BugService'
 
 export class BugController extends BaseController {
   constructor() {
-    super('api/bug')
+    super('api/bugs')
     this.router
       .get('', this.getAll)
       .get('/:id', this.getById)
@@ -12,6 +12,7 @@ export class BugController extends BaseController {
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
       .delete('/:id', this.delete)
+      .put('/:id', this.edit)
   }
 
   async getAll(req, res, next) {
@@ -44,6 +45,14 @@ export class BugController extends BaseController {
     try {
       const bug = await bugService.delete(req.params.id)
       res.send(bug)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async edit(req, res, next) {
+    try {
+      res.send(await bugService.edit(req.params.id, req.body))
     } catch (error) {
       next(error)
     }
