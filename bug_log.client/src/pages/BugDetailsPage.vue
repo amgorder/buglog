@@ -1,11 +1,11 @@
 <template>
-  <div class="container-fluid" v-if="state.bug">
+  <div class="container-fluid" v-if="state.bug.creator">
     <div class="row">
       <div class="col">
         <h1>{{ state.bug.title }}</h1>
       </div>
       <div class="col" v-if="!state.bug.closed">
-        <button type="button" class="btn btn-dark" @click="state.editBug = !state.editBug">
+        <button type="button" class="btn btn-dark" @click="state.editBug = !state.editBug" v-if="state.bug.creator.email === state.user.email">
           Edit Bug
         </button>
         <button type="button" class="btn btn-danger" @click="close">
