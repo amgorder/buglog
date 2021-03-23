@@ -28,7 +28,7 @@
                 <div v-if="bug.creator" class="card-body">
                   <div>
                     <h5>{{ bug.creator.name }}</h5>
-                    <img :src="bug.creator.picture" alt="Creator" />
+                    <!-- <img :src="bug.creator.picture" alt="Creator" /> -->
                   </div>
                   <div class="d-md-none">
                     <h6>posted on <br>{{ new Date(bug.createdAt).toLocaleString() }}</h6>
