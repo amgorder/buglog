@@ -1,71 +1,79 @@
 <template>
-  <div class="col-12 p-2 px-4 bg-light rounded mb-2 shadow-dark">
-    <div class="row justify-content-between align-items-center">
-      <h6 class="mb-0">
-        {{ bug.creator.name.substring(0, bug.creator.name.indexOf('@')) + ': ' + bug.title }} | {{ bug.closed }} | {{ bug.createdAt.split("T")[0] }}
-      </h6>
-      <i class="fa fa-plus-square" @click="createNote(bug.id)"></i>
-      <i class="fa fa-trash" @click="deleteBug(bug.id)"></i>
+  <div class="container-fluid">
+    <div class="col d-inline-flex">
+      <div class="card">
+        <div class="row">
+          <div class="col">
+          </div>
+          <router-link :to="{name: 'BugDetails', params: {id: bug.id}}">
+            <div class="card-body">
+              <div class="card-title">
+                <h4>{{ bug.title }}</h4>
+              </div>
+            </div>
+          </router-link>
+          <div class="row">
+            <div class="col">
+              <h6>{{ bug.createdAt.split("T")[0] }}</h6>
+            </div>
+          </div>
+          <div class="row" v-if="bug.updatedAt != bug.createdAt">
+            <div class="col">
+              <div>
+                <h6>{{ new Date(bug.updatedAt).toLocaleString() }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div v-if="bug.creator" class="card-body">
+            <div>
+              <h6>{{ bug.creator.name }}</h6>
+              <img :src="bug.creator.picture" alt="Creator" />
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div v-if="bug">
+            <div v-if="bug.closed" class="card-body">
+              <h3><span class="text-danger">CLOSED</span></h3>
+            </div>
+            <div v-else class="card-body">
+              <h3><span class="text-success">OPEN</span></h3>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- <div class="row">
-          <Note v-for="note in state.notes.filter(c => c.bugId === bug.id)" :key="note.id" :note="note" />
-        </div> -->
   </div>
 </template>
 
 <script>
-import { computed, onMounted, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { AppState } from '../AppState'
-import { bugService } from '../services/BugService'
-import { noteService } from '../services/NoteService'
-import { useRoute } from 'vue-router'
-
+import { bugsService } from '../services/BugsService'
 export default {
   name: 'Bug',
   props: {
-    bug: { type: Object, default: undefined }
+    bug: {
+      type: Object, required: true
+    }
   },
-  setup() {
-    const route = useRoute()
-    onMounted(() => {
-      noteService.getNotes()
-    })
+  setup(props) {
     const state = reactive({
-      user: computed(() => AppState.user),
-      notes: computed(() => AppState.notes)
+      bugs: computed(() => AppState.bugs),
+      user: computed(() => AppState.user)
     })
     return {
       state,
-      deleteBug(id) {
-        bugService.deleteBug(id)
-      },
-      editBug(rawBug) {
-        bugService.editBug(rawBug)
-      },
-      createNote(bugId) {
-        noteService.createNote(bugId)
-      },
-      route
+      getDate(id) {
+        bugsService.getDate(id)
+      }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.fa:hover {
-  cursor: pointer;
-  transform: scale(1.4);
-}
+<style scoped>
 
-.bold {
-  font-weight: bold;
-}
-
-li {
-  list-style-type: none;
-}
-
-.shadow-dark {
-  filter: drop-shadow(1px 1px 1px black);
-}
 </style>

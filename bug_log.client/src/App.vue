@@ -6,8 +6,7 @@
     <router-view />
   </main>
   <footer>
-    <div class="bg-dark text-light text-center p-4">
-      Made with 💖 by Aaron Gorder
+    <div class="bg-primary text-light text-center p-4">
     </div>
   </footer>
 </template>
