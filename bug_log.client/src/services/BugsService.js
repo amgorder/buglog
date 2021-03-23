@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { api } from './AxiosService'
 import { AppState } from '../AppState'
 import { logger } from '../utils/Logger'
@@ -42,6 +43,33 @@ class BugsService {
     }
   }
 
+  // create(bug) {
+  //   try {
+  //     Swal.fire({
+  //       title: 'New Bug',
+  //       html: '<input type="text" id="title" class="swal2-input" maxlength=15 placeholder="Bug Name"><input type="text" id="description" class="swal2-input" maxlength=150 placeholder="Description">',
+  //       confirmButtonText: 'Create',
+  //       focusConfirm: false,
+  //       preConfirm: () => {
+  //         const title = Swal.getPopup().querySelector('#title').value
+  //         if (!title) {
+  //           Swal.showValidationMessage('Please enter a bug title.')
+  //         }
+  //         return { title: title }
+  //       }
+  //     }).then(async (result) => {
+  //       const newBug = {
+  //         title: result.value.title,
+  //         description: result.value.description
+  //       }
+  //       AppState.bugs.push(newBug)
+  //       await api.post('api/bugs', newBug)
+  //       this.getBugs()
+  //     })
+  //   } catch (error) {
+  //     logger.log(error)
+  //   }
+  // }
   async create(bug) {
     try {
       delete bug.id

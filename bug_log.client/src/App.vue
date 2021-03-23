@@ -9,6 +9,8 @@
     <div class="bg-primary text-light text-center p-4">
     </div>
   </footer>
+  <ReportBugModal />
+  <CreateNoteModal />
 </template>
 
 <script>

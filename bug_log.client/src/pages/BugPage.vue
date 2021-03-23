@@ -4,6 +4,14 @@
       <div class="col">
         <h1>Bug List</h1>
       </div>
+      <form class="form-inline d-flex" @submit.prevent="createList">
+        <div class="form-group">
+          <input type="text" id="listTitle" class="form-control border-dark" maxlength="14" v-model="state.newListName">
+          <button type="submit" class="btn btn-dark text-light">
+            +
+          </button>
+        </div>
+      </form>
       <div class="col">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#report-bug">
           Create Bug
@@ -29,6 +37,7 @@ import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { useRoute } from 'vue-router'
 import { bugsService } from '../services/BugsService'
+
 export default {
   name: 'Home',
   setup() {
@@ -48,6 +57,9 @@ export default {
       async filterClosed() {
         await bugsService.filterClosed(state.showClosed)
         state.showClosed = !state.showClosed
+      },
+      create(bug) {
+        bugsService.createList(bug)
       }
     }
   }

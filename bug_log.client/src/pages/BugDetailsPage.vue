@@ -90,7 +90,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col" v-if="!state.bug.closed">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-note">
           Create Note
@@ -98,7 +98,6 @@
       </div>
     </div>
     <Note v-for="note in state.notes" :key="note.id" :note="note" />
-  </div> -->
   </div>
 </template>
 
