@@ -33,33 +33,14 @@ class BugsService {
     }
   }
 
-  // createbug(bug) {
-  //   try {
-  //     Swal.fire({
-  //       title: 'New bug',
-  //       html: '<input type="text" id="title" class="swal2-input" maxlength=15 placeholder="bug Name">',
-  //       confirmButtonText: 'Create',
-  //       focusConfirm: false,
-  //       preConfirm: () => {
-  //         const title = Swal.getPopup().querySelector('#title').value
-  //         if (!title) {
-  //           Swal.showValidationMessage('Please enter a bug title.')
-  //         }
-  //         return { title: title }
-  //       }
-  //     }).then(async (result) => {
-  //       const newbug = {
-  //         title: result.value.title,
-  //         bug: bug
-  //       }
-  //       AppState.bugs.push(newbug)
-  //       await api.post('api/bugs', newbug)
-  //       this.getbugs()
-  //     })
-  //   } catch (error) {
-  //     logger.log(error)
-  //   }
-  // }
+  async filterClosed(toggle) {
+    if (toggle) {
+      const res = await api.get('api/bugs/')
+      AppState.bugs = res.data.map(b => new Bug(b))
+    } else {
+      AppState.bugs = AppState.bugs.filter(b => b.closed !== true)
+    }
+  }
 
   async create(bug) {
     try {
@@ -82,7 +63,7 @@ class BugsService {
   }
 
   async delete(id) {
-    const res = window.confirm('are you sure you want to close your bug?')
+    const res = window.confirm('are you sure?')
     if (!res) {
       return
     }
@@ -92,27 +73,6 @@ class BugsService {
     } catch (err) {
       logger.error(err)
     }
-  }
-
-  getDate(id) {
-    const bug = AppState.bugs.find(b => b.id === id)
-    if (bug) {
-      const date = bug.createdAt
-      const updatedDate = new Date(date)
-      const year = updatedDate.getFullYear()
-      const month = (this.fixLowNumber(updatedDate.getMonth() + 1))
-      const day = this.fixLowNumber(updatedDate.getDate())
-      const hour = this.fixLowNumber(updatedDate.getHours())
-      const minute = this.fixLowNumber(updatedDate.getMinutes())
-      const newDate = `${month}-${day}-${year} ${hour}:${minute}`
-      return newDate
-    }
-
-    return 0
-  }
-
-  fixLowNumber(n) {
-    return (n < 10 ? '0' : '') + n
   }
 }
 export const bugsService = new BugsService()
